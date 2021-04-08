@@ -1,0 +1,8 @@
+Novation Circuit - DSPB56724AG
+Soundbite - DSPB56371
+
+1997 Virus A - 1 x Motorola DSP 56303
+1999 Virus B - 1 x Motorola DSP 56311
+2002 Virus C - 1 x Freescale DSP 56362
+2005 Virus TI - 2 x Freescale DSP 56367 - 2x150 MHz
+2009 Virus TI2 - 2 x Freescale DSP 56321 - 2x275 MHz

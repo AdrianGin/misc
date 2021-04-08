@@ -1,0 +1,2 @@
+If you have trouble starting Symphony Studio, make sure you install a 32bit version of Java Runtime Environment jre1.6.0_02
+And replace the eclipse.ini and startsymphony.bat with these ones which include the path to the JRE

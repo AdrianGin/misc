@@ -1,0 +1,4 @@
+Use absolute mode and create an object file.
+We also strip symbol information using -Z
+
+ASM56300 -R 0K41R -A -D HWTEST 0 -B DspMain.CLD -L DspMain.LST -Z DspMain.asm
