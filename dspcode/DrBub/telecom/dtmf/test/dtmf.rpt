@@ -1,0 +1,21 @@
+                              --------------------
+                               Performance Report
+                              --------------------
+                               Report time:Jul. 27, 98
+
+_____________________________________________________________________________
+|  Benchmark    |        Execution Time         |      Program Length        |
+|  Source File  |           (# Icyc)            |       (# Words)            |
+|   Name        |_______________________________|____________________________|
+|               |    modified  | Optimization   |  modified |  Optimization  |
+|_______________|______________|________________|___________|________________|
+|               |              |  	        |           |                |   
+|  testgen.asm  |      n/a     |     31733	|    n/a    |	   n/a	     | 
+|               |              |                |           |                |
+|  testdet.asm  |      n/a     |     81517	|    n/a    |	   n/a	     |
+|_______________|______________|________________|___________|________________|
+                                                                       
+
+Compile option:
+      asm56300 -b -l encode.asm
+      asm56300 -b -l decode.asm

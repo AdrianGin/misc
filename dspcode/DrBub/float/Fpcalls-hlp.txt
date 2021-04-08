@@ -1,0 +1,277 @@
+;**************************************************************************
+; FPCALLS.HELP:
+; Help file for defining the subroutine calling conventions of FPLIB
+; 
+; Updated 11/25/98 
+;**************************************************************************
+
+ FPLIB - MOTOROLA DSP56300 FLOATING POINT SOFTWARE SUBROUTINE LIBRARY
+ 
+ INTRODUCTION
+ 
+ FPLIB is a useful set of floating point arithmetic subroutines for the
+ Motorola DSP56300 digital signal processor.  This HELP file defines
+ the subroutine calling conventions and condition codes used by the
+ DSP56300 floating point software subroutine library (FPLIB).
+ Register usage and error conditions are described.  The storage format
+ and arithmetic representation are not discussed here but are given in
+ the FPDEF.HLP file. 
+ 
+ FPLIB INITIALIZATION AND ASSUMPTIONS
+ 
+ FPLIB must be initialized by calling the subroutine "FPINIT" before
+ any other FPLIB subroutines are used.  FPLIB assumes that M0 is 
+ RESERVED pointers for FPLIB and should not be used by the
+ calling program. FPLIB also assumes that the scaling modes are
+ DISABLED (NO SCALING) and that the CCR limit (L) bit is cleared so
+ that FPLIB subroutines can set it to indicate error conditions.  These
+ assumptions are initialized by the FPINIT subroutine.  FPINIT need
+ only be called once per application program unless the above
+ assumptions are violated.  However, FPINIT may be called at any time
+ if the user needs to restore the FPLIB assumptions. No FPLIB state
+ information (except the L bit error flag) is carried from one FPLIB
+ subroutine to another.  A final caution is that FPINIT clears the CCR
+ L bit so any previous error indication will be lost. 
+ 
+ FPLIB MEMORY USAGE
+ 
+ FPLIB uses approximately 8 words of data memory for storage of certain
+ constants and tables.  The user may specify any address in X or Y data
+ memory for this storage area.  This is done by specifying the memory
+ space label "fp_space" with an assembler DEFINE directive and the memory
+ base address label "fp_temp" with an assembler EQU directive as shown
+ below.
+ 
+       define      fp_space      'x'      ;FPLIB storage in X Data RAM
+ fp_temp      equ      0                  ;beginning at address $0000
+ 
+ For code efficiency, fp_temp should be located in the bottom 64 locations
+ of X or Y data memory to take advantage of the absolute short addressing
+ mode.
+ 
+ The current version of FPLIB requires approximately 200 program memory
+ locations if all subroutines are included.  Most subroutines require
+ other subroutines to be included since many share common code.
+ 
+ FPLIB REGISTER USAGE
+ 
+ FPLIB uses all of the DSP56300 data ALU registers for input variables,
+ output variables and temporary storage.  FPLIB does not preserve any
+ data ALU registers so users should save/restore data ALU registers as
+ required.  Input and output variables are described using a floating
+ point register notation (shown in capital letters below) similar to the
+ DSP56300 register names.  The floating point and fixed point register
+ usage is indicated in lower case letters.  The floating point mantissa
+ word is indicated with "m" and the floating point exponent word is
+ indicated with "e".
+ 
+ Input variables:
+ 
+    X      x1 = mx  (normalized)
+           x0 = ex
+ 
+    Y      y1 = my  (normalized)
+           y0 = ey
+ 
+    A      a2 = sign extension of ma
+           a1 = ma  (normalized)
+           a0 = zero
+ 
+           b2 = sign extension of ea (always zero)
+           b1 = ea
+           b0 = zero
+ 
+    D       a = fixed point data
+ 
+ Output variables:
+ 
+    R      a2 = sign extension of mr
+           a1 = mr  (normalized)
+           a0 = zero
+ 
+           b2 = sign extension of er (always zero)
+           b1 = er
+           b0 = zero
+ 
+    D       a = fixed point data
+ 
+ FPLIB SUBROUTINE CALLS
+ 
+ FPLIB subroutines are called with a JScc, JSCLR, JSR , JSSET or BScc, BSCLR,
+ BSR , BSSET instruction.
+ Input variables are loaded before calling the FPLIB subroutine and output
+ variables are available after the FPLIB subroutine returns to the calling
+ program.  Input variables may be destroyed by the subroutine.  In general,
+ the condition codes are only valid after the floating point compare "fcmp"
+ subroutine.
+ 
+ Entry Point      Operation
+ -----------      ---------
+ fpinit            Initialize FPLIB
+ fadd_xa           R = A + X
+ fadd_xy           R = Y + X
+ fsub_xa           R = A - X
+ fsub_xy           R = Y - X
+ fcmp_xa           A - X, set condition codes
+ fcmp_xy           Y - X, set condition codes
+ fmpy_xa           R = A * X
+ fmpy_xy           R = X * Y
+ fmac_xya          R = A + X * Y
+ fmac_mxya         R = A - X * Y
+ fdiv_xa           R = A / X
+ fdiv_xy           R = Y / X
+ fscal_xa          R = A * 2**ex, assumes mx=1
+ fscal_xy          R = Y * 2**ex, assumes mx=1
+ fsqrt_a           R = square root (A)
+ fsqrt_x           R = square root (X)
+ fneg_a            R = - A
+ fneg_x            R = - X
+ fabs_a            R = absolute value (A)
+ fabs_x            R = absolute value (X)
+ fix_a             D = fixed point conversion (A)
+ fix_x             D = fixed point conversion (X)
+ float_a           R = floating point conversion (A)
+ float_x           R = floating point conversion (X)
+ floor_a           R = floor(A), largest integer less than or equal to A
+ floor_x           R = floor(X)
+ fceil_a           R = ceil(A), smallest integer greater than or equal to A
+ fceil_x           R = ceil(X)
+ frac_a            R = frac(A), fractional part of A
+ frac_x            R = frac(X)
+                       
+ 
+ FPLIB ERROR CONDITIONS
+ 
+ The FPLIB subroutines detect various error conditions and set the CCR
+ limit (L) bit as an error flag.  The user may test the CCR L bit upon
+ return from the subroutine.  Note that the CCR L bit remains set until
+ cleared by the user.  To promote real-time application, each
+ subroutine also substitutes a floating point (or fixed point) value
+ for the result.  This allows the real-time system to run continuously
+ in the presence of errors which would typically abort a FORTRAN or C
+ program.  These error conditions and result values are given for each
+ subroutine below. 
+ 
+ Entry Point    Error Conditions            Result Value
+ -----------    ----------------            ------------
+ fpinit         none
+ fcmp_xa      
+ fcmp_xy
+ float_a
+ float_x
+ floor_a
+ floor_x
+ fceil_a
+ fceil_x
+ frac_a
+ frac_x
+ 
+ fadd_xa        floating point overflow     maximum value, correct sign.
+ fadd_xy        floating point underflow    zero.
+ fsub_xa
+ fsub_xy            
+ fmpy_xa
+ fmpy_xy
+ fmac_xya
+ fmac_mxya
+ fscal_xa
+ fscal_xy
+ fneg_a
+ fneg_x
+ fabs_a
+ fabs_x
+ 
+ fdiv_xa        floating point overflow       maximum value, correct sign.
+ fdiv_xy        floating point underflow      zero.
+                divide by zero                if dividend non-zero, maximum
+                                              value, correct sign.
+                                              if dividend zero, zero.
+ 
+ fsqrt_a        negative input value          zero.
+ fsqrt_x
+ 
+ fix_a          fixed point overflow          maximum fixed point value,
+ fix_x                                        correct sign.
+ 
+ FPLIB CONDITION CODES
+ 
+ In general, conditional jumps based on condition codes may be used
+ only after calling the floating point compare subroutines (fcmp_xa and
+ fcmp_xy).  The following branch conditions can be used after calling
+ fcmp_xa or fcmp_xy. Other branch conditions should not be used. 
+ 
+       "cc" Mnemonic                  Condition
+       -------------                  ---------
+       EQ - equal                      Z = 1
+       GE - greater than or equal      N eor V = 0
+       GT - greater than               Z + (N eor V) = 0
+       LE - less than or equal         Z + (N eor V) = 1
+       LT - less than                  N eor V = 1
+       NE - not equal                  Z = 0
+ 
+ FPLIB BUGS AND EXTENSIONS
+ 
+ FLPIB has been tested for a short time and is thought to be bug free.
+ However, if bugs are found they should be reported to Motorola so they
+ can be fixed.  Other subroutines may be added to extend FPLIB as time
+ allows.  User-written FPLIB extensions should be submitted to Motorola
+ for possible inclusion in FPLIB.
+  
+ FPLIB EXECUTION TIMES
+ 
+ The FPLIB subroutines are generic floating point routines which
+ include rounding, error detection (such as floating point overflow and
+ underflow) and error correction (result substitution).  As such, their
+ execution time is data dependent.  Of course, users who do not want
+ these safety features may remove them (with some editing) to gain a
+ modest speed improvement. The best case and worst case execution times
+ are given below.  The average is somewhere in between and is data and
+ algorithm dependent.  The cycle count is in DSP56300 CLOCK CYCLES 
+ and the execution time assumes a 80 MHz clock with no wait
+ states or external bus contention.  The calling program subroutine
+ call is not included in these times since it can take various forms
+ but the FPLIB return from subroutine (RTS) execution time is included.
+ 
+ Entry Point      Best Case Execution Time      Worst Case Execution Time
+ -----------      ------------------------      -------------------------
+ fpinit           10 cycles, 125  nsec          10 cycles,  125 nsec          
+ fadd_xa          14 cycles, 175  nsec          38 cycles,  475 nsec
+ fadd_xy          15 cycles, 188  nsec          39 cycles,  488 nsec
+ fsub_xa          14 cycles, 175  nsec          41 cycles,  513 nsec
+ fsub_xy          15 cycles, 188  nsec          42 cycles,  525 nsec
+ fcmp_xa           9 cycles, 113  nsec          23 cycles,  288 nsec          
+ fcmp_xy          11 cycles, 138  nsec          25 cycles,  313 nsec          
+ fmpy_xa          25 cycles, 313  nsec          30 cycles,  375 nsec
+ fmpy_xy          26 cycles, 325  nsec          31 cycles,  388 nsec
+ fmac_xya         52 cycles, 650  nsec          81 cycles, 1013 nsec
+ fmac_mxya        54 cycles, 675  nsec          86 cycles, 1075 nsec
+ fdiv_xa          16 cycles, 200  nsec          79 cycles,  988 nsec
+ fdiv_xy          17 cycles, 213  nsec          80 cycles, 1000 nsec
+ fscal_xa         14 cycles, 175  nsec          18 cycles,  225 nsec
+ fscal_xy         15 cycles, 188  nsec          19 cycles,  238 nsec
+ fsqrt_a          12 cycles, 150  nsec         190 cycles, 2375 nsec
+ fsqrt_x          13 cycles, 163  nsec         191 cycles, 2388 nsec
+ fneg_a           23 cycles, 288  nsec          27 cycles,  338 nsec
+ fneg_x           25 cycles, 313  nsec          29 cycles,  373 nsec
+ fabs_a            8 cycles, 100  nsec          31 cycles,  398 nsec
+ fabs_x            9 cycles, 113  nsec          32 cycles,  410 nsec
+ fix_a             8 cycles, 100  nsec          39 cycles,  488 nsec
+ fix_x             9 cycles, 113  nsec          40 cycles,  500 nsec
+ float_a          16 cycles, 200  nsec          22 cycles,  275 nsec          
+ float_x          17 cycles, 213  nsec          23 cycles,  288 nsec          
+ floor_a           8 cycles, 100  nsec          27 cycles,  338 nsec
+ floor_x           9 cycles, 113  nsec          28 cycles,  350 nsec
+ fceil_a          22 cycles, 275  nsec          40 cycles,  500 nsec
+ fceil_x          24 cycles, 300  nsec          42 cycles,  525 nsec
+ frac_a           61 cycles, 763  nsec          80 cycles, 1000 nsec
+ frac_x           55 cycles, 688  nsec          82 cycles, 1025 nsec
+ 
+ CONCLUSION
+ 
+ FPLIB is a compact, software floating library which can be used in
+ real-time applications.  It can be used selectively to extend the
+ dynamic range of the DSP56300 fixed point fractional arithmetic or
+ as a basic data type to support high level languages. 
+ 
+  
+

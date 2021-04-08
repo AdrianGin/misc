@@ -1,0 +1,21 @@
+;**************************************************************************
+; DHIT.HLP:
+; Help file for DHIT.ASM (for 56300)
+; (Discrete Hilbert Transform in the frequency domain)
+;
+; Updated 11/18/98 - Tested in simulator environment
+;**************************************************************************
+
+This program computes the discrete Hilbert Transform directly in the
+frequency domain. It can be combined with any of the FFT algorithms
+with normally-ordered output to combine the Hilbert transform.
+
+The Hilbert transform of a sequence introduces a negative phase shift
+of 90 degrees to the signal's positive frequencies (from 0 to N/2-1, where
+N is the number of points in the FFT algorithm), and a positive phase shift 
+of 90 degrees to the signal's negative frequencies (from N/2 to N-1). The 
+magnitude of the signal's spectrum remains unchanged. The routine DHIT.ASM
+accomplishes this by simply interchanging the real and imaginary parts in
+the frequency domain after adjusting the sign. The program can easily be 
+changed to use bit-reversed addressing if the FFT in question has
+bit-reversed output.^Z

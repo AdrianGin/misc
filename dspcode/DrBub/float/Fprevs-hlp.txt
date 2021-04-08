@@ -1,0 +1,44 @@
+;**************************************************************************
+; FPREVS.HELP:
+; Help file for defining the latest revisions of FPLIB
+; 
+; Updated 11/25/98 
+;**************************************************************************
+
+ FPLIB - MOTOROLA DSP56300 FLOATING POINT SOFTWARE SUBROUTINE LIBRARY
+ 
+
+ INTRODUCTION
+ 
+ FPLIB is a useful set of floating point arithmetic subroutines for the
+ Motorola DSP56300 digital signal processor.  This HELP file defines
+ the filenames, latest version numbers and latest revision date of all
+ FPLIB subroutines.  Users should update their FPLIB copies if they do
+ not have the latest versions since previous versions may have program
+ bugs.  As new FPLIB routines are added, their entry date will be noted
+ here.
+        
+  FPLIB       Latest         Latest           First
+ Filename     Version     Revision Date     Entry Date
+ --------     -------     -------------     ----------
+ fpinit         1.0          24-Nov-98	   24-Nov-98
+ fpadd          1.0          24-Nov-98	   24-Nov-98
+ fpsub          1.0          24-Nov-98	   24-Nov-98
+ fpcmp          1.0          24-Nov-98	   24-Nov-98
+ fpmpy          1.0          24-Nov-98	   24-Nov-98
+ fpmac          1.0          24-Nov-98	   24-Nov-98
+ fpdiv          1.0          24-Nov-98	   24-Nov-98
+ fpscale        1.0          24-Nov-98	   24-Nov-98
+ fpsqrt         1.0          24-Nov-98	   24-Nov-98
+ fpneg          1.0          24-Nov-98	   24-Nov-98
+ fpabs          1.0          24-Nov-98	   24-Nov-98
+ fpfix          1.0          24-Nov-98	   24-Nov-98
+ fpfloat        1.0          24-Nov-98	   24-Nov-98
+ fpfloor        1.0          24-Nov-98	   24-Nov-98
+ fpceil         1.0          24-Nov-98	   24-Nov-98
+ fpfrac         1.0          24-Nov-98	   24-Nov-98
+ 
+ 
+ 
+ 
+

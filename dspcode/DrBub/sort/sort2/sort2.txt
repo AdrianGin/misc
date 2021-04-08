@@ -1,0 +1,38 @@
+         Name: SORT2
+         Type: Assembler Macro
+      Version: 1.1
+ Date Entered: 26-Feb-98
+  Last Change: 26-Feb-98
+
+  Description: Sorting an Array by Heapsort Method
+
+ SORT2 is a programming example of the Heapsort method on the DSP56300.
+ The macro will sort an array of size "N_ITEMS" in X memory space
+ starting at location "ARRAY". 
+
+ SORT2 uses the Heapsort method to sort an ARRAY of signed numbers. 
+ The sort is performed "in-place" and requires no additional memory
+ locations. The algorithm was invented by J. Williams [1] and is based
+ on a binary tree sort method.  It requires more complicated coding
+ but requires fewer elementary operations than more straightforward
+ methods [2]. 
+
+ For SORT2 the execution time is proportional to NlogN, where N is
+ the array size (N_ITEMS).  Unlike SORT1, the execution time for
+ SORT2 is not constant for any given array size.  If the array is
+ already ordered, inversely ordered or randomly ordered, the execution
+ time will vary. The benchmarks are for randomly ordered arrays.
+
+ SORT2 is more efficient for larger arrays.  The SORT1 macro is
+ efficient for sorting smaller arrays of numbers. 
+ 
+  
+ References
+ ----------
+ [1] Williams, J. W. J., "Heapsort" (Algorithm 232), Comm. ACM, 7, No. 6
+ (1964), 347-348.
+
+ [2] Niklaus Wirth, "Algorithms + Data Structures = Programs,"
+ Prentice-Hall, 1976. pp. 70-76, Program 2.8.
+
+

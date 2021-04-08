@@ -1,0 +1,91 @@
+         Name: SORT1
+         Type: Assembler Macro
+      Version: 1.0
+ Date Entered: 26-Feb-98
+  Last Change: 26-Feb-98
+
+  Description: Sorting an Array by Straight Selection
+
+ SORT1 is a programming example of sorting by "Straight Selection"
+ on the DSP56300.  The macro will sort an array of size "N_ITEMS"
+ in X memory space starting at location "ARRAY".
+
+ SORT1 uses the straight selection algorithm to sort an ARRAY of
+ signed numbers.  The sort is performed "in-place" and requires no
+ additional memory locations.  The algorithm searches all items 
+ of the array to find the lowest valued item which is swapped with
+ the next item of the final sorted sequence [1].
+ 
+ For SORT1 the execution time is proportional to the square of
+ the array size (N_ITEMS).  In this DSP56300 implementation the
+ execution time for SORT1 is constant for any given array size,
+ even if the array is already ordered, inversely ordered or
+ randomly ordered when the algorithm is executed.  The benchamarks
+ are for randomly ordered arrays.
+
+ The SORT1 macro is efficient for sorting smaller arrays of numbers. 
+ SORT2 is more efficient for larger arrays.  
+                                 
+ 
+ References
+ ----------
+ [1] Niklaus Wirth, "Algorithms + Data Structures = Programs,"
+ Prentice-Hall, 1976. pp. 63-65, Program 2.3.
+
+
+Program flow graph:
+
+                       ----------------- 
+                      |  Initial some   |
+                      |  rigister       |
+                      |  i = 0          |
+                      |  j = 0          |
+                       -----------------  
+                              |
+                              |
+                              V
+                       ----------------- 
+                      |  data[i]-->a    |<-----------------
+                      |                 |                  |
+                       -----------------                   |
+                              |                            |
+                              |                            |
+                              V                            |
+                       -----------------                   |
+                      |  j = i + 1      |                  |
+                      |  i --> r        |                  |
+                       -----------------                   |
+                              |                            |
+                              |                            |
+                              V                            |
+                       -----------------                   |
+                      |  data[j]-->b    |                  |
+                      |                 |<----             |
+                      |  if (a>b)       |     |            |
+                      |     b-->a       |     |            |
+                      |     j-->r       |     |            |
+                       -----------------      |            |
+                              |               |            |
+                              |               |            |
+                              V               |            |
+                       -----------------      |            |
+                      |  j = j + 1      |-----             |
+                       -----------------                   |
+                              |                            |
+                              |                            |
+                              V                            |
+                       -----------------                   |
+                      |data[i]-->data[r]|                  |
+                      |  a --> data[i]  |                  |
+                       -----------------                   |
+                              |                            |
+                              |                            |
+                              V                            |
+                       -----------------                   |
+                      |  i = i + 1      |------------------
+                       -----------------  
+
+
+
+
+

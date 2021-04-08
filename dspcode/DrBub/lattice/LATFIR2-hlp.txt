@@ -1,0 +1,37 @@
+;**************************************************************************
+; LATFIR2.HELP:
+; Help file for LATFIR2.ASM (for 56300)
+;
+; Updated 11/25/98 
+;**************************************************************************
+         Name: LATFIR2.ASM
+         Type: Assembler Macro
+  Last Change:  19-Nov-98
+
+  Description: Lattice FIR Filter Assembler Macro
+
+ This macro implements a lattice fir filter using reflection coefficients.
+ This implementation is similar to the filter LATFIR1 except that the
+ modulo on the coefficients is equal to the filter order compared to
+ LATFIR1 where the modulo is equal to the filter order plus one.
+
+ It is possible to modify the LATFIR1 slightly  such  that the
+ number   of   locations   needed  to  store  the  filter coefficients
+ is equal to the  number  of  filter  coefficients (note in  the
+ implementation of LATFIR1 there is an unused value).
+ The filter macro is identical to the filter macro 'latfir1'
+ except for the last instruction.  The pointer R4 is adjusted by using 
+ dummy loads.  The memory map is thus:
+
+       R0                 R4
+       |                  |
+       v                  v
+   x:  S1 S2 S3 Sx     y: k1 k2 k3
+
+        M0=3 (mod 4)       M4=2 (mod 3)
+
+ The modulo register for the coefficients is set equal  to  the
+ number  of  filter coefficients minus one (the modulo register
+ is set to the desired modulo minus one).  See the example
+ 'latfir2t' for an example of how to use this filter.
+

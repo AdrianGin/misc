@@ -1,0 +1,12 @@
+The file names in each test subfolder follow the 
+naming conventions below:
+
+test program
+        *.bat           Test batch program
+        *.cmd           Simulator command
+        *_out.io        Simulated output file
+test case
+        *_in.io         Input file
+	*_out.dat	Correct output file
+performance report
+        *.rpt           Performance compare

@@ -1,0 +1,26 @@
+;**************************************************************************
+; FFTR2AT.HLP:
+; Help file for FFTR2A_T, FFTR2CN_T, AND FFTR2D_T.ASM (for 56300)
+; (Radix 2 Complex FFT Test Programs)
+;
+; Updated 11/18/98 - Tested in simulator environment
+;**************************************************************************
+
+ The FFTR2A_T.ASM program performs a complete 32-point Fast Fourier Transform
+ (FFT) on complex data.  The program calls the FFTR2A and SINCOS macros. This
+ program can also be used for testing FFTR2AA, FFTR2B, FFTR2BF, FFTR2C, FFTR2CC,
+ FFTR2D, and FFTR2E. By changing the variable "points", it can perform any size
+ FFT from 2-32768 points. Some FFT macros, such as FFTR2B or FFTR2C, can execute
+ faster at the expense of more program memory.
+
+ The FFTR2CN_T.ASM program performs a complete 32 point Fast Fourier Transform
+ (FFT) on complex data.  The program can be used to test the FFTR2CN and FFTR2EN.
+ By changing the variable "points", it can perform any size FFT from 2-32768
+ points using approximately 47 words of program memory.  Note that the 32 point
+ complex FFT is performed using a sinewave table of 256 points.
+
+ The FFTR2D_T.ASM program performs a complete 32 point Fast Fourier Transform
+ (FFT) on complex data.  The program calls the FFTR2D and SINEWAVE macros. By
+ changing the variable "points", it can perform any size FFT from 2-32768 points
+ using approximately 47 words of program memory.  Note that the 32 point complex
+ FFT is performed using a sinewave table of 256 points.
